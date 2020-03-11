@@ -17,13 +17,17 @@
 <ion-content [fullscreen]="true">
   <ion-item *ngFor="let resultado of resultadosArray">
 
-  <ion-avatar slot="start">
+  <ion-avatar slot="start" >
     <img src="https://img.icons8.com/plasticine/100/000000/task-completed.png">
   </ion-avatar>
 
+  <ng-template #loggedOut>
+    No abierta
+  </ng-template>
+
   <ion-label>
     <h1>{{resultado.$$title}}</h1>
-    <p> Solicitado por <strong>trabajador (Empresa)</strong></p>
+    <p><strong>{{resultado.titulo}}</strong></p>
   </ion-label>
 
   </ion-item>

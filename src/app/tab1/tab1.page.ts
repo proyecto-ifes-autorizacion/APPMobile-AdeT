@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { AutorizacionesService } from '../services/autorizaciones.service';
 
 @Component({
   selector: 'app-tab1',
@@ -8,29 +9,53 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 })
 export class Tab1Page {
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private autorizacionService: AutorizacionesService) {}
 
-  public resultadosArray : any = null;;
-
+  public resultadosArray : any = null;
+  public resultadosArraytemp : any;
+  public resultadoPost : any;
    ngOnInit() {
     this.listarTodasLasAutorizaciones();
+  
   }
 
 
-
-  listarTodasLasAutorizaciones(){
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
-      })
-    }
-    const URL = 'http://192.168.1.100:8080/restful/services/Autorizacion/actions/listAll/invoke';
-    this.http.get(URL, httpOptions)
-    .subscribe(resultados => (this.resultadosArray = resultados)
+  listarTodasLasAutorizaciones() {
+  
+    this.autorizacionService.editarMarca("1","cietroencambiado").subscribe(
+      contenidoObtenido => {
+        //this.resultadosArraytemp = contenidoObtenido;
+        this.resultadoPost = contenidoObtenido;
+        console.log(this.resultadoPost);
+      }
     );
-      
+
+
+    this.autorizacionService.listarTodasLasAutorizaciones()
+    .subscribe(
+      contenidoObtenido => {
+        //this.resultadosArraytemp = contenidoObtenido;
+        this.resultadosArray = contenidoObtenido;
+        console.log('Largo del array es: ' + this.resultadosArray.length);
+        this.resultadosArray.splice(-1,1);
+        console.log(this.resultadosArray[21].estado);
+
+        for (var i = 0; i < this.resultadosArray.length; i++) {
+        console.log(this.resultadosArray[i].estado);
+        if(this.resultadosArray[i].estado != "Abierta"){
+          this.resultadosArray.splice(0,i);
+
+        }
+        }
+
+        
+        //this.resultadosArray = this.resultadosArraytemp;
+
+
+        console.log('Largo del array es: ' + this.resultadosArray.length);
+    });
   }
+
 
   filterItemsOfType(){
     return this.resultadosArray.filter(resultado => resultado.titulo != null);

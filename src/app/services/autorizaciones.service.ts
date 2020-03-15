@@ -23,6 +23,34 @@ export class AutorizacionesService {
     return this.consulta;
   }
 
+  obtenerAutorizacionById(autorizacionId: string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept':  'application/json;profile=urn:org.apache.isis/v1',
+        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+      })
+    }
+    const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Autorizacion/'+autorizacionId;
+
+    this.consulta = this.http.get<any>(URL, httpOptions);
+
+    return this.consulta;
+  }
+
+  obtenerSolicitanteEmpresaByURL(solicitanteEmpresaURL: string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept':  'application/json;profile=urn:org.apache.isis/v1',
+        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+      })
+    }
+    const URL = solicitanteEmpresaURL;
+
+    this.consulta = this.http.get<any>(URL, httpOptions);
+
+    return this.consulta;
+  }
+
   editarMarca(id: String, nuevoValor:String){
     const httpOptions = {
       headers: new HttpHeaders({

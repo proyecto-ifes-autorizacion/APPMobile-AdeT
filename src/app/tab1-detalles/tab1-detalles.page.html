@@ -1,0 +1,208 @@
+<ion-header>
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start"><ion-back-button defaultHref="/tabs/tab1"></ion-back-button></ion-buttons>
+    <ion-title>Detalles de Autorizacion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <!-- <ion-icon name="list" slot="start"></ion-icon> -->
+
+      <ion-label><strong>Autorizacion: </strong>{{contenidoObtenido.$$instanceId}}</ion-label>
+      <ion-label slot="end"><strong>Estado: </strong>{{contenidoObtenido.estado}}</ion-label>
+      
+    </ion-item>
+
+    <ion-card-header>
+      <ion-card-title>{{contenidoObtenido.titulo}}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>{{contenidoObtenido.descripcion}}</ion-card-content>
+
+    <ion-item>
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      <ion-label>{{contenidoObtenido.ubicacion}}</ion-label>
+    </ion-item>
+  </ion-card>
+   
+  <ion-card *ngIf="solicitanteEmpresa != 'No tiene'">
+    <ion-item>
+      <ion-label><strong>Solicitante</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="business" slot="start"></ion-icon>
+      <ion-label>{{solicitanteEmpresa}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="solicitanteTrabajador != 'No tiene'">
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>{{solicitanteTrabajador}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="solicitanteTrabajador == 'No tiene'">
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>No tiene trabajador asignado</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="solicitanteVehiculo != 'No tiene'">
+      <ion-icon name="car-outline" slot="start"></ion-icon>
+      <ion-label>{{solicitanteVehiculo}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="solicitanteVehiculo == 'No tiene'">
+      <ion-icon name="car-outline" slot="start"></ion-icon>
+      <ion-label>No tiene vehiculo asignado</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="solicitanteEmpresa =='No tiene'">
+    <ion-item>
+      <ion-label><strong>Solicitante</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="business" slot="start"></ion-icon>
+      <ion-label>No tiene solicitante asignado</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="empresasEjecutantesLargo > 0">
+    <ion-list>
+      <!-- <ion-list-header><strong>Empresas Ejecutantes</strong></ion-list-header> -->
+      <ion-item>
+        <ion-label><strong>Empresas Ejecutantes</strong></ion-label>
+      </ion-item>
+
+        <ion-item *ngFor="let empresa of empresasEjecutantes">
+          <ion-icon name="business" slot="start"></ion-icon>
+          <ion-label><strong>{{empresa.$$title}}</strong></ion-label>
+        </ion-item>
+ 
+      </ion-list>
+  </ion-card>
+
+  <ion-card *ngIf="empresasEjecutantesLargo == 0">
+    <ion-item>
+      <ion-label><strong>Empresas Ejecutantes</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="business" slot="start"></ion-icon>
+      <ion-label>No tiene empresas asignadas</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="trabajadoresEjecutantesLargo > 0">
+    <ion-list>
+      <!-- <ion-list-header><strong>Trabajadores</strong></ion-list-header> -->
+      <ion-item>
+        <ion-label><strong>Trabajadores</strong></ion-label>
+      </ion-item>
+      <ion-item-group>
+
+        <ion-item *ngFor="let trabajador of trabajadoresEjecutantes">
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-label><h2>{{trabajador.nombre}}, {{trabajador.apellido}}</h2>
+          <h2>{{trabajador.cuil}}</h2>
+        </ion-label>
+        </ion-item>
+
+      </ion-item-group>
+
+      </ion-list>
+  </ion-card>
+
+  <ion-card *ngIf="trabajadoresEjecutantesLargo == 0">
+    <ion-item>
+      <ion-label><strong>Trabajadores</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>No tiene trabajadores asignados</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="vehiculosEjecutantesLargo > 0">
+    <ion-list>
+      <!-- <ion-list-header><strong>Vehiculos</strong></ion-list-header> -->
+      <ion-item>
+        <ion-label><strong>Vehiculos</strong></ion-label>
+      </ion-item>
+
+      <ion-item-group>
+        
+        <ion-item *ngFor="let vehiculo of vehiculosEjecutantes">
+          <ion-icon name="car-outline" slot="start"></ion-icon>
+          <ion-label>{{vehiculo.modelo.title}} ({{vehiculo.dominio}})</ion-label>
+        </ion-item>
+
+      </ion-item-group>
+
+      </ion-list>
+  </ion-card>
+
+  <ion-card *ngIf="vehiculosEjecutantesLargo == 0">
+    <ion-item>
+      <ion-label><strong>Vehiculos</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="car-outline" slot="start"></ion-icon>
+      <ion-label>No tiene vehiculos asignados</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-label><strong>Tiempo</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-label>Apertura:</ion-label>
+      <ion-label>{{contenidoObtenido.apertura}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-label>Cierre:</ion-label>
+      <ion-label>{{contenidoObtenido.cierre}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-label>Tiempo:</ion-label>
+      <ion-label>{{contenidoObtenido.tiempo}}</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-label><strong>Actividad</strong></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+      <ion-label>Estado:</ion-label>
+      <ion-label>{{contenidoObtenido.estado}}</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-row *ngIf="permiteBtnLiberar">
+    <ion-col col-6> 
+      <ion-button expand="block">Liberar</ion-button>
+    </ion-col>
+  
+    <ion-col col-6>
+      <ion-button expand="block">Anular</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="!permiteBtnLiberar">
+    <ion-col col-6> 
+      <ion-button color="medium" expand="block" disabled>Liberar</ion-button>
+    </ion-col>
+  
+    <ion-col col-6>
+      <ion-button color="medium" expand="block" disabled>Anular</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

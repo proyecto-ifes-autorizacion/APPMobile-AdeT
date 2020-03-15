@@ -28,6 +28,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'tab1-detalles/:autorizacionId',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../tab1-detalles/tab1-detalles.module').then(m => m.Tab1DetallesPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

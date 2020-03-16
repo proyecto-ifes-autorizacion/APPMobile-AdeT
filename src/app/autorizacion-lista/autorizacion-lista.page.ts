@@ -63,5 +63,29 @@ export class AutorizacionListaPage implements OnInit {
     });
   } //end listarTodasLasAutorizaciones()
 
-  
-}
+  async alertaLogOut() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar Sesion',
+      message: '¿Esta seguro que desea cerrar sesion?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Apreto boton cancelar');
+          }
+        }, {
+          text: 'Si, salir',
+          handler: () => {
+            console.log('Apreto boton Salir');
+            this.navCtrl.navigateRoot('/login');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+}//end class

@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { AutorizacionesService } from '../services/autorizaciones.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AutorizacionService } from '../services/autorizacion.service';
 
 @Component({
-  selector: 'app-tab1-detalles',
-  templateUrl: './tab1-detalles.page.html',
-  styleUrls: ['./tab1-detalles.page.scss'],
+  selector: 'app-autorizacion-detalle',
+  templateUrl: './autorizacion-detalle.page.html',
+  styleUrls: ['./autorizacion-detalle.page.scss'],
 })
-export class Tab1DetallesPage implements OnInit {
+export class AutorizacionDetallePage implements OnInit {
 
-  constructor(
-    private autorizacionService: AutorizacionesService,
+  constructor(private autorizacionService: AutorizacionService,
     private activatedRoute: ActivatedRoute) { }
 
     public contenidoObtenido : any;
@@ -25,9 +24,8 @@ export class Tab1DetallesPage implements OnInit {
     public vehiculosEjecutantes: any;
     public vehiculosEjecutantesLargo: any;
     public permiteBtnLiberar: boolean;
-    
+
   ngOnInit() {
-    
     this.activatedRoute.paramMap.subscribe(paramMap => {
       const recipeId = paramMap.get('autorizacionId')
       console.log("id recibida: "+ recipeId);
@@ -118,9 +116,7 @@ export class Tab1DetallesPage implements OnInit {
 
     });
 
-    
-  }
 
+  }//end ngOnInit()
 
-
-}
+}//end class

@@ -1,25 +1,26 @@
-import { Component } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { AutorizacionesService } from '../services/autorizaciones.service';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AutorizacionService } from '../services/autorizacion.service';
+import { AlertController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-autorizacion-lista',
+  templateUrl: './autorizacion-lista.page.html',
+  styleUrls: ['./autorizacion-lista.page.scss'],
 })
-export class Tab1Page {
-  
-  constructor(private http: HttpClient, private autorizacionService: AutorizacionesService) {}
+export class AutorizacionListaPage implements OnInit {
+
+  constructor(private http: HttpClient, private autorizacionService: AutorizacionService, public alertController: AlertController,public navCtrl: NavController) { }
 
   public resultadosArray : any = null;
   public resultadosArraytemp : any;
   public resultadosArrayFiltrado = [];
   public resultadoPost : any;
 
-   ngOnInit() {
+  ngOnInit() {
     this.listarTodasLasAutorizaciones();
-  }
-
+  } //end ngOnInit()
 
   listarTodasLasAutorizaciones() {
     this.autorizacionService.listarTodasLasAutorizaciones()
@@ -60,23 +61,7 @@ export class Tab1Page {
         console.log('Largo del array es: ' + this.resultadosArray.length);
         console.log(this.resultadosArrayFiltrado);
     });
-  }
+  } //end listarTodasLasAutorizaciones()
 
-  editarMarca() {
   
-    this.autorizacionService.editarMarca("1","cietroencambiado").subscribe(
-      contenidoObtenido => {
-        //this.resultadosArraytemp = contenidoObtenido;
-        this.resultadoPost = contenidoObtenido;
-        console.log(this.resultadoPost);
-      },
-      (error) =>{
-        console.error(error);
-      }
-    );
-  }
-
-  filterItemsOfType(){
-    return this.resultadosArray.filter(resultado => resultado.titulo != null);
-  }
 }

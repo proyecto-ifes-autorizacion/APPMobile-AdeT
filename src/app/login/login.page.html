@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Iniciar Sesion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content center text-center class="background">
+  <ion-grid> 
+    <ion-row center>
+          <ion-col size="10" offset="1">
+
+            <div class="vertical-center">
+              <div class="center">
+                <ion-img src="/assets/Logo-login.png" class="ion-align-self-end"></ion-img>
+              </div>   
+            </div>
+
+  <form [formGroup]="FormularioLogin" class="list-form" (ngSubmit)="onSubmit()">
+    <ion-item no-padding class="animated fadeInUp"  id="rounded">
+      <ion-label position="floating">
+        <ion-icon name="person-circle" item-start></ion-icon>
+        Usuario
+      </ion-label>
+      <ion-input color="black" type="text" formControlName="usuario" autocomplete="off"></ion-input>
+    </ion-item>
+    <p ion-text *ngIf="FormularioLogin.get('usuario').touched && FormularioLogin.get('usuario').hasError('required')">
+      <ion-text color="danger">
+        Campo requerido
+      </ion-text>
+    </p>
+
+    <ion-item no-padding class="animated fadeInUp" id="rounded">
+      <ion-label position="floating">
+        <ion-icon name="lock-closed" item-start></ion-icon>
+        Contraseña
+      </ion-label>
+      <ion-input (keyup.enter)="presionaEnter()" color="black" type="password" formControlName="contrasena" autocomplete="off"></ion-input>
+    </ion-item>
+    <p ion-text *ngIf="FormularioLogin.get('contrasena').touched && FormularioLogin.get('contrasena').hasError('required')">
+      <ion-text color="danger">Campo requerido</ion-text>
+    </p>
+
+      <ion-button type="submit" icon-left size="medium" expand="full" shape="round" color="primary" [disabled]="FormularioLogin.invalid" tappable>
+        <ion-icon name="log-in"></ion-icon>
+        Ingresar
+      </ion-button>
+
+      <div *ngIf="invalidLogin" class="error" color="danger">
+        Usuario o contraseña incorrecto.
+      </div>
+  </form>
+</ion-col>
+</ion-row>
+</ion-grid>
+</ion-content>

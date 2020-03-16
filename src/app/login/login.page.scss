@@ -1,0 +1,19 @@
+ion-content.background{
+    --background: url(/assets/background.jpg) 0 0/100% 100% no-repeat;
+}
+
+.vertical-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-bottom: -30px;
+  }
+
+  #rounded {
+    width: 100%;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 10px;
+    margin-bottom: 15px;  
+}

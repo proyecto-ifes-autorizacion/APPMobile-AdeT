@@ -65,6 +65,9 @@ export class AutorizacionListaPage implements OnInit {
       }
         console.log("Se quitaron los items del array que no tenian estado=Abierta");
 
+        this.resultadosArrayFiltrado.sort(( a, b ) => parseInt(a.$$instanceId, 10) - parseInt(b.$$instanceId, 10) )
+        console.log("Se ordenaron los items del array ascendentemente por instanceId");
+
         this.resultadosArray = this.resultadosArrayFiltrado;
         console.log('Largo del array es: ' + this.resultadosArray.length);
         console.log(this.resultadosArrayFiltrado);

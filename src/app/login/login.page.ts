@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   public Auth64 : any;
   loading: boolean;
   errorMessage: string;
-  usuario: any;
+  public usuario: string = ''
   contrasena: any;
 
   constructor(public navCtrl: NavController, private formBuilder: FormBuilder, private loginService: LoginService) { }
@@ -34,6 +34,11 @@ export class LoginPage implements OnInit {
 
   cierraApp(){
     navigator['app'].exitApp()
+  }
+
+  autoCompletar(parameter1: String, parameter2: String){
+    this.FormularioLogin.controls.usuario.setValue(parameter1);
+    this.FormularioLogin.controls.contrasena.setValue(parameter2);
   }
 
   presionaEnter(){

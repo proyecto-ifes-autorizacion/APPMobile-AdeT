@@ -22,6 +22,13 @@ export class AutorizacionListaPage implements OnInit {
     this.listarTodasLasAutorizaciones();
   } //end ngOnInit()
 
+  ionViewWillEnter(){
+    console.log("volvio a entrar y pidio lista")
+    this.resultadosArray = [];
+    this.resultadosArrayFiltrado = [];
+    this.listarTodasLasAutorizaciones();
+  }//end ionViewWillEnter()
+
   listarTodasLasAutorizaciones() {
     this.autorizacionService.listarTodasLasAutorizaciones()
     .subscribe(
@@ -45,7 +52,7 @@ export class AutorizacionListaPage implements OnInit {
         console.log(this.resultadosArray[i].estado);
         console.log(this.resultadosArray[i].titulo);
         if(this.resultadosArray[i].hasOwnProperty("estado")){
-        if(this.resultadosArray[i].estado == "Abierta"){
+        if(this.resultadosArray[i].estado == "Liberada"){
         //this.resultadosArray.splice(i,1);
         this.resultadosArrayFiltrado.push(this.resultadosArray[i]);
         console.log("se agrega al temp")
@@ -57,6 +64,7 @@ export class AutorizacionListaPage implements OnInit {
         i = i+1;
       }
         console.log("Se quitaron los items del array que no tenian estado=Abierta");
+
         this.resultadosArray = this.resultadosArrayFiltrado;
         console.log('Largo del array es: ' + this.resultadosArray.length);
         console.log(this.resultadosArrayFiltrado);

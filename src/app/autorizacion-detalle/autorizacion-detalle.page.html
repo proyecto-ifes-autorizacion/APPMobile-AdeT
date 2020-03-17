@@ -186,23 +186,25 @@
     </ion-item>
   </ion-card>
 
-  <ion-row *ngIf="permiteBtnLiberar">
-    <ion-col col-6> 
-      <ion-button expand="block">Liberar</ion-button>
-    </ion-col>
-  
+  <ion-row *ngIf="permiteBtnCerrar">
     <ion-col col-6>
-      <ion-button expand="block">Anular</ion-button>
+      <ion-button icon-right (click)="FechaHoraPicker.open()" expand="block">Cerrar
+        <ion-datetime #FechaHoraPicker pickerFormat="YYYY-MM-DDTHH:mmTZD" [pickerOptions]="PickerPersonalizadoOptions"
+          [(ngModel)]="FechaHoraPersonalizada"></ion-datetime>
+      </ion-button>
     </ion-col>
-  </ion-row>
+    <ion-col col-6>
+      <ion-button expand="block">Cancelar</ion-button>
+    </ion-col>
+    </ion-row>
 
-  <ion-row *ngIf="!permiteBtnLiberar">
+  <ion-row *ngIf="!permiteBtnCerrar">
     <ion-col col-6> 
-      <ion-button color="medium" expand="block" disabled>Liberar</ion-button>
+      <ion-button color="medium" expand="block" disabled>Cerrar</ion-button>
     </ion-col>
   
     <ion-col col-6>
-      <ion-button color="medium" expand="block" disabled>Anular</ion-button>
+      <ion-button color="medium" expand="block" disabled>Cancelar</ion-button>
     </ion-col>
   </ion-row>
 </ion-content>

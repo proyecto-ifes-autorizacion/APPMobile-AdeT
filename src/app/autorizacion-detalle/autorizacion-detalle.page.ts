@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AutorizacionService } from '../services/autorizacion.service';
+import { FormsModule } from '@angular/forms';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-autorizacion-detalle',
@@ -9,9 +11,16 @@ import { AutorizacionService } from '../services/autorizacion.service';
   styleUrls: ['./autorizacion-detalle.page.scss'],
 })
 export class AutorizacionDetallePage implements OnInit {
+  consulta: any;
+  fecha: any;
+  PickerPersonalizadoOptions;
 
   constructor(private autorizacionService: AutorizacionService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient,
+    private formsModule: FormsModule,
+    public alertController: AlertController,
+    public navCtrl: NavController) { }
 
     public contenidoObtenido : any;
     public solicitanteEmpresa: String;
@@ -23,7 +32,10 @@ export class AutorizacionDetallePage implements OnInit {
     public trabajadoresEjecutantesLargo :any;
     public vehiculosEjecutantes: any;
     public vehiculosEjecutantesLargo: any;
-    public permiteBtnLiberar: boolean;
+    public permiteBtnCerrar: boolean;
+    public recipeId: any;
+    
+
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -101,11 +113,11 @@ export class AutorizacionDetallePage implements OnInit {
             this.trabajadoresEjecutantesLargo != 0
             // this.vehiculosEjecutantesLargo != 0 ES OPCIONAL LOS VEHICULOS
             ){
-          console.log("Permite el boton Liberar")
-          this.permiteBtnLiberar = true;
+          console.log("Permite el boton Cerrar")
+          this.permiteBtnCerrar = true;
           }else{
             console.log("No se muestra el boton Liberar")
-            this.permiteBtnLiberar = false;
+            this.permiteBtnCerrar = false;
           }
         },
         (error: any) => {
@@ -116,7 +128,71 @@ export class AutorizacionDetallePage implements OnInit {
 
     });
 
+    
+
+    this.PickerPersonalizadoOptions = {
+      buttons: [{
+        text: 'Cancelar',
+        handler: () => {
+          console.log('Se clickeo Cancelar, no hace nada.');
+        }
+      },{
+        text: 'Aceptar',
+        handler: ( evento ) => {
+          console.log('Se clickeo Aceptar.');
+          console.log("fecha seleccionada:"+ evento);
+          const FechaHoraPersonalizada= new Date().toISOString()
+          console.log(FechaHoraPersonalizada)
+
+          this.activatedRoute.paramMap.subscribe(paramMap => {
+            const recipeId = paramMap.get('autorizacionId')
+          this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
+          })
+
+          this.presentAlert().then(()=>{
+            
+            this.navCtrl.navigateRoot('/autorizacion-lista');
+          });
+
+        }
+      }]
+    }
 
   }//end ngOnInit()
+
+  
+  
+  cerrarAutorizacion(id: any, fecha: any) {
+    console.log("Se recibio id y fecha: "+id +" - "+fecha)
+  
+    this.autorizacionService.cerrarAutorizacion(id, fecha)
+    .subscribe(
+      contenidoObtenido => {
+        //this.resultadosArraytemp = contenidoObtenido;
+        console.log(contenidoObtenido)
+
+    });
+
+ 
+    
+  } //end cerrarAutorizacion()
+
+
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Informacion',
+      message: 'La autorizacion fue cerrada con la fecha seleccionada.',
+      buttons: ['Aceptar'],
+    });
+  
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  
+
+
 
 }//end class

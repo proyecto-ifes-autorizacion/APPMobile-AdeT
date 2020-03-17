@@ -22,8 +22,10 @@ export class AutorizacionListaPage implements OnInit {
   public resultadosArraytemp : any;
   public resultadosArrayFiltrado = [];
   public resultadoPost : any;
+  public usuarioAlmacenado: String;
 
   ngOnInit() {
+    this.saludarUsuario();
     this.listarTodasLasAutorizaciones();
   } //end ngOnInit()
 
@@ -33,6 +35,15 @@ export class AutorizacionListaPage implements OnInit {
     this.resultadosArrayFiltrado = [];
     this.listarTodasLasAutorizaciones();
   }//end ionViewWillEnter()
+
+  async saludarUsuario() {
+    this.usuarioAlmacenado = window.localStorage['usuario'];
+    const toast = await this.toastController.create({
+      message: 'Bienvenido al sistema '+this.usuarioAlmacenado+'!',
+      duration: 4000
+    });
+    toast.present();
+  }
 
   doRefresh(event) {
     console.log('Begin async operation');
@@ -114,6 +125,7 @@ export class AutorizacionListaPage implements OnInit {
           text: 'Si, salir',
           handler: () => {
             console.log('Apreto boton Salir');
+            window.localStorage['usuario'] = '';
             this.navCtrl.navigateRoot('/login');
           }
         }

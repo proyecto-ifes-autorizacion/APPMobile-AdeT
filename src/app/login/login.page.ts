@@ -45,6 +45,10 @@ export class LoginPage implements OnInit {
     this.onSubmit();
   }
   
+  persist(usuarioRecibido: String){
+    window.localStorage.usuario = usuarioRecibido;
+  }
+
   onSubmit(){
     console.log("Se apreto submit")
     console.log(this.FormularioLogin.value)
@@ -69,6 +73,9 @@ export class LoginPage implements OnInit {
       }else if(this.usuario == "gestionador"){
       this.navCtrl.navigateRoot('/autorizacion-detalle/21');
       }
+
+      this.persist(this.usuario);
+
     } else {
     console.log("No trajo un array por lo tanto el usuario o contrasena es incorrecto")
     this.invalidLogin = true;

@@ -78,7 +78,7 @@ export class AutorizacionService {
           "value": fecha
         }
       }, httpOptions);
-      console.log("Cerro la autorizacion con fecha: '"+this.fecha+"'");
+      console.log("Cerro la autorizacion ("+id+") con fecha: '"+fecha+"'");
     console.log(this.consulta);
     //return alert("cerrada")
     return this.consulta;

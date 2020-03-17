@@ -34,7 +34,7 @@ export class AutorizacionDetallePage implements OnInit {
     public vehiculosEjecutantesLargo: any;
     public permiteBtnCerrar: boolean;
     public recipeId: any;
-    
+    public FechaHoraPersonalizada: any;
 
 
   ngOnInit() {
@@ -128,7 +128,7 @@ export class AutorizacionDetallePage implements OnInit {
 
     });
 
-    
+
 
     this.PickerPersonalizadoOptions = {
       buttons: [{
@@ -141,12 +141,12 @@ export class AutorizacionDetallePage implements OnInit {
         handler: ( evento ) => {
           console.log('Se clickeo Aceptar.');
           console.log("fecha seleccionada:"+ evento);
-          const FechaHoraPersonalizada= new Date().toISOString()
-          console.log(FechaHoraPersonalizada)
+          //const FechaHoraPersonalizada= new Date().toISOString()
+          console.log(this.FechaHoraPersonalizada)
 
           this.activatedRoute.paramMap.subscribe(paramMap => {
             const recipeId = paramMap.get('autorizacionId')
-          this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
+          //this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
           })
 
           this.presentAlert().then(()=>{
@@ -159,6 +159,20 @@ export class AutorizacionDetallePage implements OnInit {
     }
 
   }//end ngOnInit()
+
+  fechaCambiada(){
+    this.activatedRoute.paramMap.subscribe(paramMap => {
+      const recipeId = paramMap.get('autorizacionId')
+      let {FechaHoraPersonalizada} = this
+      console.log("La fecha traida: "+FechaHoraPersonalizada)
+    this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
+    })
+
+    this.presentAlert().then(()=>{
+      
+      this.navCtrl.navigateRoot('/autorizacion-lista');
+    });
+  }
 
   volveraInicio(){
     this.navCtrl.navigateRoot('/autorizacion-lista');

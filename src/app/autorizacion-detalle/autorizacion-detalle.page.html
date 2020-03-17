@@ -189,8 +189,7 @@
   <ion-row *ngIf="permiteBtnCerrar">
     <ion-col col-6>
       <ion-button icon-right (click)="FechaHoraPicker.open()" expand="block">Cerrar
-        <ion-datetime #FechaHoraPicker pickerFormat="YYYY-MM-DDTHH:mmTZD" [pickerOptions]="PickerPersonalizadoOptions"
-          [(ngModel)]="FechaHoraPersonalizada"></ion-datetime>
+        <ion-datetime #FechaHoraPicker pickerFormat="YYYY-MM-DDTHH:mmTZD" cancelText="Cancelar" doneText="Aceptar" (ionChange)="fechaCambiada()" [(ngModel)]="FechaHoraPersonalizada"></ion-datetime>
       </ion-button>
     </ion-col>
     <ion-col col-6>

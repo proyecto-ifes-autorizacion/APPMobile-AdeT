@@ -32,12 +32,12 @@ export class AutorizacionListaPage implements OnInit {
     this.listarTodasLasAutorizaciones();
   } //end ngOnInit()
 
-  // ionViewWillEnter(){
-  //   console.log("volvio a entrar y pidio lista")
-  //   this.resultadosArray = [];
-  //   this.resultadosArrayFiltrado = [];
-  //   this.listarTodasLasAutorizaciones();
-  // }//end ionViewWillEnter()
+  ionViewWillEnter(){
+    console.log("volvio a entrar y pidio lista")
+    this.resultadosArray = [];
+    this.resultadosArrayFiltrado = [];
+    this.listarTodasLasAutorizaciones();
+  }//end ionViewWillEnter()
 
   async saludarUsuario() {
     this.usuarioAlmacenado = window.localStorage['usuario'];
@@ -52,7 +52,7 @@ export class AutorizacionListaPage implements OnInit {
     console.log('Begin async operation');
   
     setTimeout(() => {
-      this.ionViewWillEnter()
+      //this.ionViewWillEnter()
       console.log('Async operation has ended');
       event.target.complete();
     }, 100);

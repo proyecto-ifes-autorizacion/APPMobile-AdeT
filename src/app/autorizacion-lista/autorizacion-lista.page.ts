@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AutorizacionService } from '../services/autorizacion.service';
 import { AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-autorizacion-lista',
@@ -11,7 +12,11 @@ import { NavController } from '@ionic/angular';
 })
 export class AutorizacionListaPage implements OnInit {
 
-  constructor(private http: HttpClient, private autorizacionService: AutorizacionService, public alertController: AlertController,public navCtrl: NavController) { }
+  constructor(private http: HttpClient,
+              private autorizacionService: AutorizacionService,
+              public alertController: AlertController,
+              public navCtrl: NavController,
+              public toastController: ToastController) { }
 
   public resultadosArray : any = null;
   public resultadosArraytemp : any;
@@ -28,6 +33,25 @@ export class AutorizacionListaPage implements OnInit {
     this.resultadosArrayFiltrado = [];
     this.listarTodasLasAutorizaciones();
   }//end ionViewWillEnter()
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+  
+    setTimeout(() => {
+      this.ionViewWillEnter()
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 100);
+    this.presentToast();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Actualizando lista de Autorizaciones',
+      duration: 2000
+    });
+    toast.present();
+  }
 
   listarTodasLasAutorizaciones() {
     this.autorizacionService.listarTodasLasAutorizaciones()

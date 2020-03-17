@@ -25,16 +25,19 @@ export class AutorizacionListaPage implements OnInit {
   public usuarioAlmacenado: String;
 
   ngOnInit() {
+    console.log("pide lista OnInit.")
     this.saludarUsuario();
-    this.listarTodasLasAutorizaciones();
-  } //end ngOnInit()
-
-  ionViewWillEnter(){
-    console.log("volvio a entrar y pidio lista")
     this.resultadosArray = [];
     this.resultadosArrayFiltrado = [];
     this.listarTodasLasAutorizaciones();
-  }//end ionViewWillEnter()
+  } //end ngOnInit()
+
+  // ionViewWillEnter(){
+  //   console.log("volvio a entrar y pidio lista")
+  //   this.resultadosArray = [];
+  //   this.resultadosArrayFiltrado = [];
+  //   this.listarTodasLasAutorizaciones();
+  // }//end ionViewWillEnter()
 
   async saludarUsuario() {
     this.usuarioAlmacenado = window.localStorage['usuario'];

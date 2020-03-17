@@ -160,7 +160,9 @@ export class AutorizacionDetallePage implements OnInit {
 
   }//end ngOnInit()
 
-  
+  volveraInicio(){
+    this.navCtrl.navigateRoot('/autorizacion-lista');
+  }
   
   cerrarAutorizacion(id: any, fecha: any) {
     console.log("Se recibio id y fecha: "+id +" - "+fecha)
@@ -172,10 +174,14 @@ export class AutorizacionDetallePage implements OnInit {
         console.log(contenidoObtenido)
 
     });
-
- 
-    
   } //end cerrarAutorizacion()
+
+  CancelarAutorizacion(){
+    this.activatedRoute.paramMap.subscribe(paramMap => {
+      const recipeId = paramMap.get('autorizacionId')
+      this.navCtrl.navigateRoot('/autorizacion-cancelar/'+recipeId);
+    })
+  }//endCancelarAutorizacion()
 
 
 

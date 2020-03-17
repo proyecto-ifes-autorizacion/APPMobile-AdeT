@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar  color="primary">
-    <ion-buttons slot="start"><ion-back-button defaultHref="/autorizacion-lista"></ion-back-button></ion-buttons>
+    <ion-buttons slot="start"><ion-back-button (click)="volveraInicio()"></ion-back-button></ion-buttons>
     <ion-title>Detalles de Autorizacion</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -194,7 +194,7 @@
       </ion-button>
     </ion-col>
     <ion-col col-6>
-      <ion-button expand="block">Cancelar</ion-button>
+      <ion-button expand="block" (click)="CancelarAutorizacion()">Cancelar</ion-button>
     </ion-col>
     </ion-row>
 

@@ -32,9 +32,14 @@ export class LoginPage implements OnInit {
     });
   } //end ngOnInit()
 
+  cierraApp(){
+    navigator['app'].exitApp()
+  }
+
   presionaEnter(){
     this.onSubmit();
   }
+  
   onSubmit(){
     console.log("Se apreto submit")
     console.log(this.FormularioLogin.value)

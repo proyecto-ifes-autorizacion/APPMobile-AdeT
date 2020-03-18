@@ -27,17 +27,17 @@ export class AutorizacionListaPage implements OnInit {
   ngOnInit() {
     console.log("pide lista OnInit.")
     this.saludarUsuario();
-    this.resultadosArray = [];
-    this.resultadosArrayFiltrado = [];
-    this.listarTodasLasAutorizaciones();
+    //this.resultadosArray = [];
+    //this.resultadosArrayFiltrado = [];
+    //this.listarTodasLasAutorizaciones();
   } //end ngOnInit()
 
-  // ionViewWillEnter(){
-  //   console.log("volvio a entrar y pidio lista")
+  ionViewWillEnter(){
+     console.log("volvio a entrar y pidio lista")
   //   this.resultadosArray = [];
   //   this.resultadosArrayFiltrado = [];
-  //   this.listarTodasLasAutorizaciones();
-  // }//end ionViewWillEnter()
+     this.listarTodasLasAutorizaciones();
+  }//end ionViewWillEnter()
 
   async saludarUsuario() {
     this.usuarioAlmacenado = window.localStorage['usuario'];
@@ -71,6 +71,9 @@ export class AutorizacionListaPage implements OnInit {
   }
 
   listarTodasLasAutorizaciones() {
+    this.resultadosArray = [];
+    this.resultadosArrayFiltrado = [];
+
     this.autorizacionService.listarTodasLasAutorizaciones()
     .subscribe(
       contenidoObtenido => {

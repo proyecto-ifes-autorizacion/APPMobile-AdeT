@@ -6,6 +6,12 @@
 </ion-header>
 
 <ion-content center text-center class="background">
+
+  <div *ngIf="invalidServidor" class="alert alert-danger" role="alert">
+    La direccion URL de la API no responde, por favor establezca una.
+    <ion-button color="primary" size="small" (click)="URLservidorPrompt()">Establecer URL de API</ion-button>
+  </div>
+
   <ion-grid> 
     <ion-row center>
           <ion-col size="10" offset="1">
@@ -14,6 +20,11 @@
               <div class="center">
                 <ion-img src="/assets/Logo-login.png" class="ion-align-self-end" (click)="autoCompletar('admin', 'admin')"></ion-img>
               </div>   
+            </div>
+
+            <div *ngIf="invalidLogin" class="alert alert-danger" role="alert">
+              Usuario o contraseña incorrecto.<br>
+            O no tiene permisos para utilizar la app mobile.
             </div>
 
   <form [formGroup]="FormularioLogin" class="list-form" (ngSubmit)="onSubmit()">
@@ -45,10 +56,6 @@
         <ion-icon name="log-in"></ion-icon>
         Ingresar
       </ion-button>
-
-      <div *ngIf="invalidLogin" class="error" color="danger">
-        Usuario o contraseña incorrecto.
-      </div>
   </form>
 </ion-col>
 </ion-row>

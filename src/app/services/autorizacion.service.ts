@@ -6,7 +6,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class AutorizacionService {
   
-
   constructor(private http: HttpClient) { }
 
   public consulta : any;
@@ -14,15 +13,23 @@ export class AutorizacionService {
   public fecha: any;
   public motivo: String;
   public IPServidor: String = 'http://192.168.1.100:8080';
+  public URLservidor: String;
 
   listarTodasLasAutorizaciones(){
+
+    if(window.localStorage.URLservidor){
+      this.URLservidor = window.localStorage.URLservidor;
+    }else{
+      this.URLservidor = this.IPServidor;
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = this.IPServidor+'/restful/services/Autorizacion/actions/listAll/invoke';
+    const URL = this.URLservidor+'/restful/services/Autorizacion/actions/listAll/invoke';
 
     this.consulta = this.http.get<any>(URL, httpOptions);
 
@@ -30,13 +37,20 @@ export class AutorizacionService {
   } //end listarTodasLasAutorizaciones()
 
   obtenerAutorizacionById(autorizacionId: string){
+
+    if(window.localStorage.URLservidor){
+      this.URLservidor = window.localStorage.URLservidor;
+    }else{
+      this.URLservidor = this.IPServidor;
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+autorizacionId;
+    const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+autorizacionId;
 
     this.consulta = this.http.get<any>(URL, httpOptions);
 
@@ -44,6 +58,13 @@ export class AutorizacionService {
   } //end obtenerAutorizacionById()
 
   obtenerSolicitanteEmpresaByURL(solicitanteEmpresaURL: string){
+
+    if(window.localStorage.URLservidor){
+      this.URLservidor = window.localStorage.URLservidor;
+    }else{
+      this.URLservidor = this.IPServidor;
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
@@ -61,13 +82,20 @@ export class AutorizacionService {
 
   cerrarAutorizacion(id: any, fecha: any){
     console.log("entro aca con el id: "+id)
+
+    if(window.localStorage.URLservidor){
+      this.URLservidor = window.localStorage.URLservidor;
+    }else{
+      this.URLservidor = this.IPServidor;
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cerrar/invoke'
+    const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cerrar/invoke'
 
     this.consulta = this.http.post(URL,
       {
@@ -86,13 +114,20 @@ export class AutorizacionService {
 
   cancelarAutorizacion(id: any, fecha: any, motivo:String){
     console.log("entro aca con el id: "+id+" motivo: "+motivo+" fecha: "+fecha)
+
+    if(window.localStorage.URLservidor){
+      this.URLservidor = window.localStorage.URLservidor;
+    }else{
+      this.URLservidor = this.IPServidor;
+    }
+    
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cancelar/invoke'
+    const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cancelar/invoke'
 
     this.consulta = this.http.post(URL,
       {

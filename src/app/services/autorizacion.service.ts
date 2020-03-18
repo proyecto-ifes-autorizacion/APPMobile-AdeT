@@ -13,6 +13,7 @@ export class AutorizacionService {
   //public id: any;
   public fecha: any;
   public motivo: String;
+  public IPServidor: String = 'http://192.168.1.100:8080';
 
   listarTodasLasAutorizaciones(){
     const httpOptions = {
@@ -21,7 +22,7 @@ export class AutorizacionService {
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = 'http://192.168.1.100:8080/restful/services/Autorizacion/actions/listAll/invoke';
+    const URL = this.IPServidor+'/restful/services/Autorizacion/actions/listAll/invoke';
 
     this.consulta = this.http.get<any>(URL, httpOptions);
 
@@ -35,7 +36,7 @@ export class AutorizacionService {
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Autorizacion/'+autorizacionId;
+    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+autorizacionId;
 
     this.consulta = this.http.get<any>(URL, httpOptions);
 
@@ -66,11 +67,7 @@ export class AutorizacionService {
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Autorizacion/'+id+'/actions/Cerrar/invoke'
-    //const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Marca/'+id+'/actions/Update/invoke';
-    //this.fecha = 'peug';
-    //this.fecha = '2020-03-16T23:20:00.00Z';
-    
+    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cerrar/invoke'
 
     this.consulta = this.http.post(URL,
       {
@@ -95,11 +92,7 @@ export class AutorizacionService {
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Autorizacion/'+id+'/actions/Cancelar/invoke'
-    //const URL = 'http://192.168.1.100:8080/restful/objects/dominio.Marca/'+id+'/actions/Update/invoke';
-    //this.fecha = 'peug';
-    //this.fecha = '2020-03-16T23:20:00.00Z';
-    
+    const URL = this.IPServidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cancelar/invoke'
 
     this.consulta = this.http.post(URL,
       {

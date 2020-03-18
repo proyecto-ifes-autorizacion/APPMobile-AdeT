@@ -32,12 +32,12 @@ export class AutorizacionListaPage implements OnInit {
     this.listarTodasLasAutorizaciones();
   } //end ngOnInit()
 
-  ionViewWillEnter(){
-    console.log("volvio a entrar y pidio lista")
-    this.resultadosArray = [];
-    this.resultadosArrayFiltrado = [];
-    this.listarTodasLasAutorizaciones();
-  }//end ionViewWillEnter()
+  // ionViewWillEnter(){
+  //   console.log("volvio a entrar y pidio lista")
+  //   this.resultadosArray = [];
+  //   this.resultadosArrayFiltrado = [];
+  //   this.listarTodasLasAutorizaciones();
+  // }//end ionViewWillEnter()
 
   async saludarUsuario() {
     this.usuarioAlmacenado = window.localStorage['usuario'];
@@ -53,6 +53,9 @@ export class AutorizacionListaPage implements OnInit {
   
     setTimeout(() => {
       //this.ionViewWillEnter()
+      this.resultadosArray = [];
+      this.resultadosArrayFiltrado = [];
+      this.listarTodasLasAutorizaciones();
       console.log('Async operation has ended');
       event.target.complete();
     }, 100);
@@ -71,44 +74,36 @@ export class AutorizacionListaPage implements OnInit {
     this.autorizacionService.listarTodasLasAutorizaciones()
     .subscribe(
       contenidoObtenido => {
-        //this.resultadosArraytemp = contenidoObtenido;
         this.resultadosArray = contenidoObtenido;
         this.resultadosArraytemp = this.resultadosArray;
 
-        
-        console.log(this.resultadosArray);
-        console.log('Largo del array es: ' + this.resultadosArray.length);
-        //this.resultadosArraytemp.splice(-1);
+        // console.log(this.resultadosArray);
+        // console.log('Largo del array es: ' + this.resultadosArray.length);
         this.resultadosArraytemp.pop()
-        //console.log(Object.getOwnPropertyNames(this.resultadosArraytemp))
-        //le elimina el ultimo item del array que no contiene una autorizacion
-        console.log(this.resultadosArraytemp);
-        console.log('Largo del array es: ' + this.resultadosArraytemp.length);
+        // //le elimina el ultimo item del array que no contiene una autorizacion
+        // console.log(this.resultadosArraytemp);
+        // console.log('Largo del array es: ' + this.resultadosArraytemp.length);
 
-        const largoArray =this.resultadosArraytemp.length;
+        const largoArray = this.resultadosArraytemp.length;
         for (var i = 0; i < largoArray;) {
-        console.log(this.resultadosArray[i].estado);
-        console.log(this.resultadosArray[i].titulo);
-        if(this.resultadosArray[i].hasOwnProperty("estado")){
-        if(this.resultadosArray[i].estado == "Liberada"){
-        //this.resultadosArray.splice(i,1);
-        this.resultadosArrayFiltrado.push(this.resultadosArray[i]);
-        console.log("se agrega al temp")
-        //si el estado del item no es Abierta lo quita del Array
-        
-        }
-        }
-        console.log(i);
+        //console.log(this.resultadosArray[i].estado+" "+this.resultadosArray[i].titulo);
+          if(this.resultadosArraytemp[i].hasOwnProperty("estado")){
+            if(this.resultadosArraytemp[i].estado == "Liberada"){
+            this.resultadosArrayFiltrado.push(this.resultadosArray[i]);
+            //console.log("Item tiene estado y es Liberada por lo que se agrega al temp")
+            }
+          }
+        //console.log(i);
         i = i+1;
-      }
-        console.log("Se quitaron los items del array que no tenian estado=Abierta");
+        }
+        console.log("Se creo un nuevo array con los item de estado=Liberada");
 
         this.resultadosArrayFiltrado.sort(( a, b ) => parseInt(a.$$instanceId, 10) - parseInt(b.$$instanceId, 10) )
         console.log("Se ordenaron los items del array ascendentemente por instanceId");
 
         this.resultadosArray = this.resultadosArrayFiltrado;
-        console.log('Largo del array es: ' + this.resultadosArray.length);
-        console.log(this.resultadosArrayFiltrado);
+        console.log('Largo del nuevo array es: ' + this.resultadosArray.length);
+        //console.log(this.resultadosArrayFiltrado);
     });
   } //end listarTodasLasAutorizaciones()
 

@@ -14,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   public consulta : any;
-  
+  public IPServidor: String = 'http://192.168.1.100:8080';
 
   realizaLogin(usuario:String, contrasena:String){
     
@@ -25,7 +25,7 @@ export class LoginService {
       headers = headers.append('Accept', 'application/json;profile=urn:org.apache.isis/v1');
       headers = headers.append('Authorization', 'Basic '+this.Auth64);
 
-    const URL = 'http://192.168.1.100:8080/restful/services/Autorizacion/actions/listAll/invoke';
+    const URL = this.IPServidor+'/restful/services/Autorizacion/actions/listAll/invoke';
 
     return this.http.get<any>(URL, {headers: headers})
     

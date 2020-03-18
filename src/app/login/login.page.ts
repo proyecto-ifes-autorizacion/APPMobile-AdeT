@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
         Validators.required
       ])]
     });
+
   } //end ngOnInit()
 
   cierraApp(){
@@ -62,38 +63,21 @@ export class LoginPage implements OnInit {
     this.loginService.realizaLogin(this.usuario, this.contrasena)
     .subscribe(
     (response) => {
-    console.log('Respuesta de GET recibida')
+    console.log('Respuesta de la API recibida sin error')
     //console.log(this.response)
 
     if (response && response.length) {   
-      console.log("Trajo un array entonces se logueo")
-      //window.localStorage.setItem('token', contenidoObtenido.token)
-      if(this.usuario == "admin"){
+      console.log("Trajo un array entonces significa que se autenticó")
       this.navCtrl.navigateRoot('/autorizacion-lista');
-      }else if(this.usuario == "gestionador"){
-      this.navCtrl.navigateRoot('/autorizacion-detalle/21');
-      }
 
       this.persist(this.usuario);
-
-    } else {
-    console.log("No trajo un array por lo tanto el usuario o contrasena es incorrecto")
-    this.invalidLogin = true;
     }
     },
-    (error) => {                              //Error callback
-    console.error('Error de GET capturado')
-    this.errorMessage = error.statusText;
-    console.log(this.errorMessage)
+    (error) => {
+    console.error('Respuesta de la API recibida con error');
+    console.log(error.statusText)
     this.invalidLogin = true;
-
-          //throw error;   //You can also throw the error to a global error handler
-        }
-      )
-
-
-
-    //this.navCtrl.navigateRoot('/autorizacion-lista');
+    })
   } //end onSubmit()
 
 } //end class

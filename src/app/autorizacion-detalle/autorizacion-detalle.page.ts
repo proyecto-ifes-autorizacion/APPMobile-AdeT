@@ -13,7 +13,6 @@ import { AlertController, NavController } from '@ionic/angular';
 export class AutorizacionDetallePage implements OnInit {
   consulta: any;
   fecha: any;
-  PickerPersonalizadoOptions;
 
   constructor(private autorizacionService: AutorizacionService,
     private activatedRoute: ActivatedRoute,
@@ -40,10 +39,7 @@ export class AutorizacionDetallePage implements OnInit {
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
       const recipeId = paramMap.get('autorizacionId')
-      console.log("id recibida: "+ recipeId);
-
-      // this.contenidoObtenido = this.autorizacionService.obtenerAutorizacionById(''+recipeId+'');
-      // console.log(this.contenidoObtenido);
+      console.log("id recibida por URL: "+ recipeId);
 
       this.contenidoObtenido = this.autorizacionService.obtenerAutorizacionById(recipeId).subscribe(
         contenidoObtenido => {
@@ -91,15 +87,15 @@ export class AutorizacionDetallePage implements OnInit {
                     
           this.empresasEjecutantes = contenidoObtenido.ejecutantes;
           this.empresasEjecutantesLargo = this.empresasEjecutantes.length;
-          console.log(this.empresasEjecutantes);
+          console.log("Empresas ejecutantes: "+this.empresasEjecutantes);
 
           this.trabajadoresEjecutantes = contenidoObtenido.ejecutanteTrabajadores;
           this.trabajadoresEjecutantesLargo = this.trabajadoresEjecutantes.length;
-          console.log(this.trabajadoresEjecutantes);
+          console.log("trabajadoresEjecutantes: "+this.trabajadoresEjecutantes);
 
           this.vehiculosEjecutantes = contenidoObtenido.ejecutanteVehiculos;
           this.vehiculosEjecutantesLargo = this.vehiculosEjecutantes.length;
-          console.log(this.vehiculosEjecutantes);
+          console.log("vehiculosEjecutantes: "+this.vehiculosEjecutantes);
 
 
           if(
@@ -113,52 +109,26 @@ export class AutorizacionDetallePage implements OnInit {
             this.trabajadoresEjecutantesLargo != 0
             // this.vehiculosEjecutantesLargo != 0 ES OPCIONAL LOS VEHICULOS
             ){
-          console.log("Permite el boton Cerrar")
+          console.log("Permite usar los botones Cerrar/Cancelar")
           this.permiteBtnCerrar = true;
           }else{
-            console.log("No se muestra el boton Liberar")
+            console.log("No permite usar los botonesCerrar/Cancelar")
             this.permiteBtnCerrar = false;
           }
         },
         (error: any) => {
-            console.log("Error al GET:"+ error.message);
-            //alert("Error al GET:"+ error.message + "status: "+error.status+ "statusText: "+error.statusText+"headers: "+error.headers);
+            console.log("Error al GET:"+ error.message + "status: "+error.status+ "statusText: "+error.statusText+"headers: "+error.headers);
         }
       );
 
     });
 
-
-
-    this.PickerPersonalizadoOptions = {
-      buttons: [{
-        text: 'Cancelar',
-        handler: () => {
-          console.log('Se clickeo Cancelar, no hace nada.');
-        }
-      },{
-        text: 'Aceptar',
-        handler: ( evento ) => {
-          console.log('Se clickeo Aceptar.');
-          console.log("fecha seleccionada:"+ evento);
-          //const FechaHoraPersonalizada= new Date().toISOString()
-          console.log(this.FechaHoraPersonalizada)
-
-          this.activatedRoute.paramMap.subscribe(paramMap => {
-            const recipeId = paramMap.get('autorizacionId')
-          //this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
-          })
-
-          this.presentAlert().then(()=>{
-            
-            this.navCtrl.navigateRoot('/autorizacion-lista');
-          });
-
-        }
-      }]
-    }
-
   }//end ngOnInit()
+
+  volveraInicio(){
+    this.navCtrl.navigateRoot('/autorizacion-lista');
+  }//end volveraInicio()
+
 
   fechaCambiada(){
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -169,35 +139,9 @@ export class AutorizacionDetallePage implements OnInit {
     })
 
     this.presentAlert().then(()=>{
-      
       this.navCtrl.navigateRoot('/autorizacion-lista');
     });
-  }
-
-  volveraInicio(){
-    this.navCtrl.navigateRoot('/autorizacion-lista');
-  }
-  
-  cerrarAutorizacion(id: any, fecha: any) {
-    console.log("Se recibio id y fecha: "+id +" - "+fecha)
-  
-    this.autorizacionService.cerrarAutorizacion(id, fecha)
-    .subscribe(
-      contenidoObtenido => {
-        //this.resultadosArraytemp = contenidoObtenido;
-        console.log(contenidoObtenido)
-
-    });
-  } //end cerrarAutorizacion()
-
-  CancelarAutorizacion(){
-    this.activatedRoute.paramMap.subscribe(paramMap => {
-      const recipeId = paramMap.get('autorizacionId')
-      this.navCtrl.navigateRoot('/autorizacion-cancelar/'+recipeId);
-    })
-  }//endCancelarAutorizacion()
-
-
+  }//end fechaCambiada()
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -211,8 +155,24 @@ export class AutorizacionDetallePage implements OnInit {
     console.log(result);
   }
 
-  
 
+  
+  cerrarAutorizacion(id: any, fecha: any) {
+    console.log("Se recibio id: "+id +" y fecha: "+fecha)
+  
+    this.autorizacionService.cerrarAutorizacion(id, fecha)
+    .subscribe(
+      contenidoObtenido => {
+        console.log(contenidoObtenido)
+    });
+  } //end cerrarAutorizacion()
+
+  cancelarAutorizacion(){
+    this.activatedRoute.paramMap.subscribe(paramMap => {
+      const recipeId = paramMap.get('autorizacionId')
+      this.navCtrl.navigateRoot('/autorizacion-cancelar/'+recipeId);
+    })
+  }//end CancelarAutorizacion()
 
 
 }//end class

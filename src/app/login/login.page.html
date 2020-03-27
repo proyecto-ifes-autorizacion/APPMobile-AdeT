@@ -9,7 +9,7 @@
 
   <div *ngIf="invalidServidor" class="alert alert-danger" role="alert">
     La direccion URL de la API no responde, por favor establezca una.
-    <ion-button color="primary" size="small" (click)="URLservidorPrompt()">Establecer URL de API</ion-button>
+    <ion-button color="primary" size="small" (click)="elegirURLservidorPrompt()">Establecer URL de API</ion-button>
   </div>
 
   <ion-grid> 
@@ -60,4 +60,10 @@
 </ion-col>
 </ion-row>
 </ion-grid>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="elegirURLservidorPrompt()">
+    <ion-icon name="settings-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>

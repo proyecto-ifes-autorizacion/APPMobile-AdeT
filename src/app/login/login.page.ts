@@ -20,7 +20,8 @@ export class LoginPage implements OnInit {
   public usuario: string = ''
   contrasena: any;
   URLservidor: String;
-  public ServidorIP: String = 'http://apacheisis.ddns.net:8080';
+  //public ServidorIP: String = 'http://apacheisis.ddns.net:8080';
+  public ServidorIP: String = 'http://192.168.0.100:8080';
   direccionURL: any;
   public invalidServidor: boolean =false;
 
@@ -83,7 +84,7 @@ export class LoginPage implements OnInit {
 //     .catch(function(err) {
 //         console.log('fetch failed! ', err);
 //           this.invalidServidor = true;
-//        this.URLservidorPrompt(this.direccionURL);
+//        this.elegirURLservidorPrompt(this.direccionURL);
 //         // Rejection already happened with setTimeout
 //         if(didTimeOut) return;
 //         // Reject with error
@@ -98,7 +99,7 @@ export class LoginPage implements OnInit {
 // .catch(function(err) {
 //     // Error: response error, request timeout or runtime error
 //     this.invalidServidor = true;
-//     this.URLservidorPrompt(this.direccionURL);
+//     this.elegirURLservidorPrompt(this.direccionURL);
 //     console.log('promise error! ', err);
 // });
 
@@ -113,11 +114,12 @@ export class LoginPage implements OnInit {
       console.log('La URL "'+this.direccionURL+'" NO existe.');
       //alert("No existe la direccion: "+this.direccionURL)
       this.invalidServidor = true;
-      this.URLservidorPrompt(this.direccionURL);
+      this.elegirURLservidorPrompt(this.direccionURL);
     })
   }//end verificaURLservidor()
 
-  async URLservidorPrompt(urlValue) {
+  
+  async elegirURLservidorPrompt(urlValue) {
     if(window.localStorage.URLservidor){
       urlValue = window.localStorage.URLservidor;
     }else if(!urlValue){
@@ -145,31 +147,43 @@ export class LoginPage implements OnInit {
         }, {
           text: 'Guardar',
           handler: (data) => {
+
+            if (!data.inputUrlServidor) {
+              console.log("El campo esta vacio.");
+              //alert("El campo esta vacio.");
+              return false;
+
+            }else{
             //console.log('Persiono Guardar. Campo: '+data.inputUrlServidor);
             window.localStorage.URLservidor = data.inputUrlServidor;
             this.ngOnInit();
+            }
           }
         }
       ]
     });
 
     await alert.present();
-  }//en URLservidorPrompt()
+  }//en elegirURLservidorPrompt()
+
 
   cierraApp(){
     window.localStorage.URLservidor = "";
     navigator['app'].exitApp()
   }
 
+
   autoCompletar(parameter1: String, parameter2: String){
     this.FormularioLogin.controls.usuario.setValue(parameter1);
     this.FormularioLogin.controls.contrasena.setValue(parameter2);
   }
 
+
   presionaEnter(){
     this.onSubmit();
   }
   
+
   onSubmit(){
     console.log("Se apreto submit")
     console.log(this.FormularioLogin.value)
@@ -187,10 +201,10 @@ export class LoginPage implements OnInit {
     //console.log(this.response)
 
     if (response && response.length) {   
-      console.log("Trajo un array entonces significa que se autenticó")
+      console.log("Trajo un array entonces significa que se autenticó correctamente.")
       this.navCtrl.navigateRoot('/autorizacion-lista');
 
-      this.persist(this.usuario);
+      this.GuardaUsuarioEnCookie(this.usuario);
     }
     },
     (error) => {
@@ -201,7 +215,8 @@ export class LoginPage implements OnInit {
     })
   } //end onSubmit()
 
-  persist(usuarioRecibido: String){
+
+  GuardaUsuarioEnCookie(usuarioRecibido: String){
     window.localStorage.usuario = usuarioRecibido;
   }
   

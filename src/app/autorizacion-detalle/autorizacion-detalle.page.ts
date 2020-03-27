@@ -18,7 +18,7 @@ export class AutorizacionDetallePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
     private formsModule: FormsModule,
-    public alertController: AlertController,
+    public alertCtrl: AlertController,
     public navCtrl: NavController) { }
 
     public contenidoObtenido : any;
@@ -34,7 +34,11 @@ export class AutorizacionDetallePage implements OnInit {
     public permiteBtnCerrar: boolean;
     public recipeId: any;
     public FechaHoraPersonalizada: any;
-
+    //private alertCtrl: AlertController;
+    public inputFecha: any;
+    public inputHora: any;
+    public inputMotivo: any;
+    public fechaHoraUnidas: any;
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -125,54 +129,184 @@ export class AutorizacionDetallePage implements OnInit {
 
   }//end ngOnInit()
 
-  volveraInicio(){
-    this.navCtrl.navigateRoot('/autorizacion-lista');
-  }//end volveraInicio()
 
 
-  fechaCambiada(){
-    this.activatedRoute.paramMap.subscribe(paramMap => {
-      const recipeId = paramMap.get('autorizacionId')
-      let {FechaHoraPersonalizada} = this
-      console.log("La fecha traida: "+FechaHoraPersonalizada)
-    this.cerrarAutorizacion(recipeId, FechaHoraPersonalizada)
-    })
+  async cerrarAutorizacionPrompt(){
 
-    this.presentAlert().then(()=>{
-      this.navCtrl.navigateRoot('/autorizacion-lista');
+    const alerta = await this.alertCtrl.create({
+      header: 'Cerrar Autorizacion',
+      subHeader: 'selecione Fecha y hora',
+      inputs: [
+        {
+          name: 'inputFecha',
+          type: 'date',
+          placeholder: 'AAAA-MM-DD',
+          label: "Fecha"
+        },
+        {
+          name: 'inputHora',
+          type: 'time',
+          placeholder: 'HH:MM',
+          label: "Hora"
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Presiono Cancelar');
+          }
+        }, {
+          text: 'Guardar',
+          handler: (data) => {
+            //console.log('Persiono Guardar. Campo: '+data.inputUrlServidor);
+            
+            if (data.inputFecha == "" ||
+              data.inputHora == "" ) {
+              console.log("Los campos estan vacios");
+              //alert("Los campos estan vacios");
+              return false;
+
+            }else if (data.inputFecha != "" ||
+                      data.inputHora != "" ) {
+              this.activatedRoute.paramMap.subscribe(paramMap => {
+              const recipeId = paramMap.get('autorizacionId')
+              let {inputFecha} = this
+              let {inputHora} = this
+              this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
+              var fechaConvertida = new Date(this.fechaHoraUnidas).toISOString()
+              console.log("Fecha convertida: "+fechaConvertida);
+              //alert("Fecha convertida: "+fechaConvertida);
+              //alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida);
+
+              this.autorizacionService.cerrarAutorizacion(recipeId, fechaConvertida)
+              .subscribe(
+                contenidoObtenido => {
+                  console.log("resultado: "+contenidoObtenido)
+                })
+
+              })
+            }
+        
+            this.cerrarAutorizacionSatisfactoria().then(()=>{
+              this.navCtrl.navigateRoot('/autorizacion-lista');
+            })
+          }
+        }
+      ]
     });
-  }//end fechaCambiada()
+    await alerta.present();
+  }//end cerrarAutorizacionPrompt()
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
+  async cerrarAutorizacionSatisfactoria() {
+    const alerta = await this.alertCtrl.create({
       header: 'Informacion',
       message: 'La autorizacion fue cerrada con la fecha seleccionada.',
       buttons: ['Aceptar'],
     });
   
-    await alert.present();
-    let result = await alert.onDidDismiss();
+    await alerta.present();
+    let result = await alerta.onDidDismiss();
     console.log(result);
-  }
+  }//end cancelarAutorizacionSatisfactoria()
+
 
 
   
-  cerrarAutorizacion(id: any, fecha: any) {
-    console.log("Se recibio id: "+id +" y fecha: "+fecha)
-  
-    this.autorizacionService.cerrarAutorizacion(id, fecha)
-    .subscribe(
-      contenidoObtenido => {
-        console.log(contenidoObtenido)
+  async cancelarAutorizacionPrompt(){
+    // this.activatedRoute.paramMap.subscribe(paramMap => {
+    //   const recipeId = paramMap.get('autorizacionId')
+    //   this.navCtrl.navigateRoot('/autorizacion-cancelar/'+recipeId);
+
+    const alerta = await this.alertCtrl.create({
+      header: 'Cancelar Autorizacion',
+      subHeader: 'selecione Fecha y hora',
+      inputs: [
+        {
+          name: 'inputFecha',
+          type: 'date',
+          placeholder: 'AAAA-MM-DD',
+          label: "Fecha"
+        },
+        {
+          name: 'inputHora',
+          type: 'time',
+          placeholder: 'HH:MM',
+          label: "Hora"
+        },
+        {
+          name: 'inputMotivo',
+          type: 'text',
+          placeholder: 'Motivo'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Presiono Cancelar');
+          }
+        }, {
+          text: 'Guardar',
+          handler: (data) => {
+            //console.log('Persiono Guardar. Campo: '+data.inputUrlServidor);
+            
+            if (data.inputFecha == "" ||
+              data.inputHora == "" ) {
+              console.log("Los campos estan vacios");
+              //alert("Los campos estan vacios");
+              //alerta.dismiss();
+              return false;
+
+            }else if (data.inputFecha != "" ||
+                      data.inputHora != "" ||
+                      data.inputMotivo != "" ) {
+              this.activatedRoute.paramMap.subscribe(paramMap => {
+              const recipeId = paramMap.get('autorizacionId')
+              let {inputFecha} = this
+              let {inputHora} = this
+              let {inputMotivo} = this
+              this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
+              var fechaConvertida = new Date(this.fechaHoraUnidas).toISOString()
+              console.log("Fecha convertida: "+fechaConvertida);
+              //alert("Fecha convertida: "+fechaConvertida);
+              alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida+"/"+data.inputMotivo);
+              //this.autorizacionService.cancelarAutorizacion(recipeId, inputFecha, inputMotivo);
+              this.autorizacionService.cancelarAutorizacion(recipeId, fechaConvertida, data.inputMotivo)
+              .subscribe(
+                contenidoObtenido => {
+                  console.log("resultado: "+contenidoObtenido)
+                })
+
+              })
+            }
+        
+            this.cancelarAutorizacionSatisfactoria().then(()=>{
+              this.navCtrl.navigateRoot('/autorizacion-lista');
+            })
+          }
+        }
+      ]
     });
-  } //end cerrarAutorizacion()
+    await alerta.present();
+  }//end cancelarAutorizacionPrompt()
 
-  cancelarAutorizacion(){
-    this.activatedRoute.paramMap.subscribe(paramMap => {
-      const recipeId = paramMap.get('autorizacionId')
-      this.navCtrl.navigateRoot('/autorizacion-cancelar/'+recipeId);
-    })
-  }//end CancelarAutorizacion()
+  async cancelarAutorizacionSatisfactoria() {
+    const alerta = await this.alertCtrl.create({
+      header: 'Informacion',
+      message: 'La Autorizacion fue cancelada con la informacion especificada.',
+      buttons: ['Aceptar'],
+    });
+  
+    await alerta.present();
+    let result = await alerta.onDidDismiss();
+    console.log(result);
+  }//end cancelarAutorizacionSatisfactoria()
+
 
 
 }//end class

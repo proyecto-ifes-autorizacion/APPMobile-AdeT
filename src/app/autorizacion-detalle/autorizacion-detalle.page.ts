@@ -4,6 +4,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AutorizacionService } from '../services/autorizacion.service';
 import { FormsModule } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
+import { element } from 'protractor';
+import { Observable } from 'rxjs';
+import {concatMap, tap} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-autorizacion-detalle',
@@ -13,6 +17,7 @@ import { AlertController, NavController } from '@ionic/angular';
 export class AutorizacionDetallePage implements OnInit {
   consulta: any;
   fecha: any;
+  data: any = [];
 
   constructor(private autorizacionService: AutorizacionService,
     private activatedRoute: ActivatedRoute,
@@ -21,11 +26,11 @@ export class AutorizacionDetallePage implements OnInit {
     public alertCtrl: AlertController,
     public navCtrl: NavController) { }
 
-    public contenidoObtenido : any;
+    public arrayAutorizacion: any = [];
     public solicitanteEmpresa: String;
     public solicitanteTrabajador: String;
     public solicitanteVehiculo: String;
-    public empresasEjecutantes: any;
+    public empresasEjecutantes: any =[];
     public empresasEjecutantesLargo: any;
     public trabajadoresEjecutantes: any;
     public trabajadoresEjecutantesLargo :any;
@@ -41,25 +46,32 @@ export class AutorizacionDetallePage implements OnInit {
     public fechaHoraUnidas: any;
 
   ngOnInit() {
+
     this.activatedRoute.paramMap.subscribe(paramMap => {
       const recipeId = paramMap.get('autorizacionId')
       console.log("id recibida por URL: "+ recipeId);
+      
 
-      this.contenidoObtenido = this.autorizacionService.obtenerAutorizacionById(recipeId).subscribe(
+      this.autorizacionService.obtenerAutorizacionById(recipeId).subscribe(
         contenidoObtenido => {
-          this.contenidoObtenido = contenidoObtenido;
-
+          this.arrayAutorizacion = contenidoObtenido;
+          console.log("##############################################")
           console.log(contenidoObtenido);
+          
           if(!contenidoObtenido.titulo){
-            this.contenidoObtenido.titulo = "Sin titulo";
+            this.arrayAutorizacion.titulo = "Sin titulo";
           }
 
           if(!contenidoObtenido.descripcion){
-            this.contenidoObtenido.descripcion = "Sin descripcion";
+            this.arrayAutorizacion.descripcion = "Sin descripcion";
           }
 
           if(!contenidoObtenido.ubicacion){
-            this.contenidoObtenido.ubicacion = "Sin ubicacion";
+            this.arrayAutorizacion.ubicacion = "Sin ubicacion";
+          }
+
+          if(!contenidoObtenido.cierre){
+            this.arrayAutorizacion.cierre = "No cerrada aún";
           }
 
           if (contenidoObtenido.hasOwnProperty("solicitanteEmpresa")){
@@ -91,21 +103,21 @@ export class AutorizacionDetallePage implements OnInit {
                     
           this.empresasEjecutantes = contenidoObtenido.ejecutantes;
           this.empresasEjecutantesLargo = this.empresasEjecutantes.length;
-          console.log("Empresas ejecutantes: "+this.empresasEjecutantes);
+          //console.log("Empresas ejecutantes: "+this.empresasEjecutantes);
 
-          this.trabajadoresEjecutantes = contenidoObtenido.ejecutanteTrabajadores;
-          this.trabajadoresEjecutantesLargo = this.trabajadoresEjecutantes.length;
-          console.log("trabajadoresEjecutantes: "+this.trabajadoresEjecutantes);
+          //this.trabajadoresEjecutantes = contenidoObtenido.ejecutanteTrabajadores;
+          //this.trabajadoresEjecutantesLargo = this.trabajadoresEjecutantes.length;
+          //console.log("trabajadoresEjecutantes: "+this.trabajadoresEjecutantes);
 
-          this.vehiculosEjecutantes = contenidoObtenido.ejecutanteVehiculos;
-          this.vehiculosEjecutantesLargo = this.vehiculosEjecutantes.length;
-          console.log("vehiculosEjecutantes: "+this.vehiculosEjecutantes);
+          //this.vehiculosEjecutantes = contenidoObtenido.ejecutanteVehiculos;
+          //this.vehiculosEjecutantesLargo = this.vehiculosEjecutantes.length;
+          //console.log("vehiculosEjecutantes: "+this.vehiculosEjecutantes);
 
 
           if(
-            this.contenidoObtenido.titulo != "Sin titulo" &&
-            this.contenidoObtenido.descripcion != "Sin descripcion" &&
-            this.contenidoObtenido.ubicacion != "Sin ubicacion" &&
+            this.arrayAutorizacion.titulo != "Sin titulo" &&
+            this.arrayAutorizacion.descripcion != "Sin descripcion" &&
+            this.arrayAutorizacion.ubicacion != "Sin ubicacion" &&
             this.solicitanteEmpresa != 'No tiene' &&
             this.solicitanteTrabajador != 'No tiene' &&
             //this.solicitanteVehiculo = null ES OPCIONAL EL VEHICULO

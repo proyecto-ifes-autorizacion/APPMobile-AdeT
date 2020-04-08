@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AutorizacionService {
-  
+  resultado: any;
+  array1: string[];
+  dataObtenida: any;
+  dataFromCallUno: any;
   constructor(private http: HttpClient) { }
 
   public consulta : any;
@@ -15,6 +20,8 @@ export class AutorizacionService {
   public IPServidor: String = 'http://192.168.1.100:8080';
   public URLservidor: String;
 
+
+  
   listarTodasLasAutorizaciones(){
 
     if(window.localStorage.URLservidor){
@@ -36,6 +43,8 @@ export class AutorizacionService {
     return this.consulta;
   } //end listarTodasLasAutorizaciones()
 
+
+
   obtenerAutorizacionById(autorizacionId: string){
 
     if(window.localStorage.URLservidor){
@@ -53,11 +62,14 @@ export class AutorizacionService {
     const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+autorizacionId;
 
     this.consulta = this.http.get<any>(URL, httpOptions);
-
+    //console.log("El resultado de la consulta es:")
+    //console.log(this.consulta)
     return this.consulta;
   } //end obtenerAutorizacionById()
 
-  obtenerSolicitanteEmpresaByURL(solicitanteEmpresaURL: string){
+
+
+  obtenerEjecutante(ejecutanteId: void){
 
     if(window.localStorage.URLservidor){
       this.URLservidor = window.localStorage.URLservidor;
@@ -71,13 +83,12 @@ export class AutorizacionService {
         'Authorization': 'Basic YWRtaW46YWRtaW4=',
       })
     }
-    const URL = solicitanteEmpresaURL;
 
-    this.consulta = this.http.get<any>(URL, httpOptions);
+    const URL = this.URLservidor+'/restful/objects/dominio.Ejecutante/'+ejecutanteId;
 
-    return this.consulta;
-  } //end obtenerSolicitanteEmpresaByURL()
-
+  return this.http.get<any>(URL, httpOptions);
+  }//end obtenerEjecutante()
+  
 
 
   cerrarAutorizacion(id: any, fecha: any){
@@ -113,7 +124,7 @@ export class AutorizacionService {
 
 
   cancelarAutorizacion(id: any, fecha: any, motivo:String){
-    console.log("entro aca con el id: "+id+" motivo: "+motivo+" fecha: "+fecha)
+    //console.log("Cancelara con el id: "+id+" motivo: "+motivo+" fecha: "+fecha)
 
     if(window.localStorage.URLservidor){
       this.URLservidor = window.localStorage.URLservidor;

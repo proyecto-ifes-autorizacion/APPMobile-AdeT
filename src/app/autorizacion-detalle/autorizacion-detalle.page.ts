@@ -70,10 +70,6 @@ export class AutorizacionDetallePage implements OnInit {
             this.arrayAutorizacion.ubicacion = "Sin ubicacion";
           }
 
-          if(!contenidoObtenido.cierre){
-            this.arrayAutorizacion.cierre = "No cerrada aún";
-          }
-
           if (contenidoObtenido.hasOwnProperty("solicitanteEmpresa")){
             console.log("Tiene SolicitanteEmpresa");
             console.log("la empresa del solicitante es: "+contenidoObtenido.solicitanteEmpresa.title)
@@ -105,14 +101,31 @@ export class AutorizacionDetallePage implements OnInit {
           this.empresasEjecutantesLargo = this.empresasEjecutantes.length;
           //console.log("Empresas ejecutantes: "+this.empresasEjecutantes);
 
-          //this.trabajadoresEjecutantes = contenidoObtenido.ejecutanteTrabajadores;
-          //this.trabajadoresEjecutantesLargo = this.trabajadoresEjecutantes.length;
-          //console.log("trabajadoresEjecutantes: "+this.trabajadoresEjecutantes);
 
-          //this.vehiculosEjecutantes = contenidoObtenido.ejecutanteVehiculos;
-          //this.vehiculosEjecutantesLargo = this.vehiculosEjecutantes.length;
-          //console.log("vehiculosEjecutantes: "+this.vehiculosEjecutantes);
+          function dateFormat(x, y) {
+            var z = {
+                M: x.getMonth() + 1,
+                d: x.getDate(),
+                h: x.getHours(),
+                m: x.getMinutes(),
+                s: x.getSeconds()
+            };
+            y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+                return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+            });
+        
+            return y.replace(/(y+)/g, function(v) {
+                return x.getFullYear().toString().slice(-v.length)
+            });
+        }
+        
+          this.arrayAutorizacion.apertura = dateFormat(new Date(contenidoObtenido.apertura), 'dd/MM/yyyy hh:mm');
 
+          if(contenidoObtenido.cierre){
+            this.arrayAutorizacion.cierre = dateFormat(new Date(contenidoObtenido.cierre), 'dd/MM/yyyy hh:mm');
+          }else{
+            this.arrayAutorizacion.cierre = "Aún no cerrada"
+          }
 
           if(
             this.arrayAutorizacion.titulo != "Sin titulo" &&
@@ -188,9 +201,13 @@ export class AutorizacionDetallePage implements OnInit {
               let {inputFecha} = this
               let {inputHora} = this
               this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
-              var fechaConvertida = new Date(this.fechaHoraUnidas).toISOString()
-              console.log("Fecha convertida: "+fechaConvertida);
-              //alert("Fecha convertida: "+fechaConvertida);
+              var fechaConvertidaAfecha = new Date(this.fechaHoraUnidas);
+              var fechaConvertidaAfechaMenos3 = fechaConvertidaAfecha.setHours(fechaConvertidaAfecha.getHours() - 3);
+              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString()
+              var fechaConvertida = fechafechaConvertidaAfechaISO
+              //var fechaConvertida = this.fechaHoraUnidas;
+              //console.log("Fecha convertida: "+fechaConvertida);
+              alert("Fecha unida: "+this.fechaHoraUnidas+"\nFecha ConvertidaAfecha: "+fechaConvertidaAfecha+"\nfechaConvertidaAfechaMenos3: "+fechaConvertidaAfechaMenos3+"\nfechafechaConvertidaAfechaISO: "+fechafechaConvertidaAfechaISO+"\nFecha convertida: "+fechaConvertida);
               //alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida);
 
               this.autorizacionService.cerrarAutorizacion(recipeId, fechaConvertida)

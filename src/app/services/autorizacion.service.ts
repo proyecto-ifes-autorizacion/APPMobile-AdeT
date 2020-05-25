@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { NavController } from '@ionic/angular';
 
 
 @Injectable({
@@ -11,29 +11,46 @@ export class AutorizacionService {
   array1: string[];
   dataObtenida: any;
   dataFromCallUno: any;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public navCtrl: NavController,) { }
 
   public consulta : any;
   //public id: any;
   public fecha: any;
   public motivo: String;
-  public IPServidor: String = 'http://192.168.1.100:8080';
+  public URLSecundaria: String = 'http://192.168.1.100:8080';
   public URLservidor: String;
+  public autenticacion: String;
 
+  obtieneServidorConfigurado(){
+    if(window.localStorage.URLservidor){
+      //this.URLservidor = window.localStorage.URLservidor;
+      return window.localStorage.URLservidor
+    }else{
+      //this.URLservidor = this.URLSecundaria;
+      return this.URLSecundaria
+    }
+  }
 
+  obtieneAuteticacionUsuario(){
+    if(window.localStorage.autenticacion){
+      //this.URLservidor = window.localStorage.URLservidor;
+      return window.localStorage.autenticacion
+    }else{
+      //this.URLservidor = this.URLSecundaria;
+      return this.navCtrl.navigateRoot('/autorizacion-lista');
+    }
+  }
   
   listarTodasLasAutorizaciones(){
 
-    if(window.localStorage.URLservidor){
-      this.URLservidor = window.localStorage.URLservidor;
-    }else{
-      this.URLservidor = this.IPServidor;
-    }
+    this.URLservidor = this.obtieneServidorConfigurado();
+
+    this.autenticacion = this.obtieneAuteticacionUsuario();
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+        'Authorization': 'Basic '+this.autenticacion+'',
       })
     }
     const URL = this.URLservidor+'/restful/services/Autorizacion/actions/listAll/invoke';
@@ -47,16 +64,14 @@ export class AutorizacionService {
 
   obtenerAutorizacionById(autorizacionId: string){
 
-    if(window.localStorage.URLservidor){
-      this.URLservidor = window.localStorage.URLservidor;
-    }else{
-      this.URLservidor = this.IPServidor;
-    }
+    this.URLservidor = this.obtieneServidorConfigurado();
+
+    this.autenticacion = this.obtieneAuteticacionUsuario();
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+        'Authorization': 'Basic '+this.autenticacion+'',
       })
     }
     const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+autorizacionId;
@@ -71,16 +86,14 @@ export class AutorizacionService {
 
   obtenerEjecutante(ejecutanteId: void){
 
-    if(window.localStorage.URLservidor){
-      this.URLservidor = window.localStorage.URLservidor;
-    }else{
-      this.URLservidor = this.IPServidor;
-    }
+    this.URLservidor = this.obtieneServidorConfigurado();
+
+    this.autenticacion = this.obtieneAuteticacionUsuario();
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+        'Authorization': 'Basic '+this.autenticacion+'',
       })
     }
 
@@ -94,16 +107,14 @@ export class AutorizacionService {
   cerrarAutorizacion(id: any, fecha: any){
     console.log("entro aca con el id: "+id)
 
-    if(window.localStorage.URLservidor){
-      this.URLservidor = window.localStorage.URLservidor;
-    }else{
-      this.URLservidor = this.IPServidor;
-    }
+    this.URLservidor = this.obtieneServidorConfigurado();
+
+    this.autenticacion = this.obtieneAuteticacionUsuario();
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+        'Authorization': 'Basic '+this.autenticacion+'',
       })
     }
     const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cerrar/invoke'
@@ -126,16 +137,14 @@ export class AutorizacionService {
   cancelarAutorizacion(id: any, fecha: any, motivo:String){
     //console.log("Cancelara con el id: "+id+" motivo: "+motivo+" fecha: "+fecha)
 
-    if(window.localStorage.URLservidor){
-      this.URLservidor = window.localStorage.URLservidor;
-    }else{
-      this.URLservidor = this.IPServidor;
-    }
+    this.URLservidor = this.obtieneServidorConfigurado();
+
+    this.autenticacion = this.obtieneAuteticacionUsuario();
     
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept':  'application/json;profile=urn:org.apache.isis/v1',
-        'Authorization': 'Basic YWRtaW46YWRtaW4=',
+        'Authorization': 'Basic '+this.autenticacion+'',
       })
     }
     const URL = this.URLservidor+'/restful/objects/dominio.Autorizacion/'+id+'/actions/Cancelar/invoke'

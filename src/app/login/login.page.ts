@@ -12,45 +12,46 @@ import { LoginService } from '../services/login.service';
 export class LoginPage implements OnInit {
   
   public FormularioLogin: FormGroup;
-  public invalidLogin: boolean =false;
-  public usuarioDosPuntosContrasena: String;
-  public Auth64 : any;
-  loading: boolean;
-  errorMessage: string;
+  public invalidLogin: boolean = false;
+  public BtnDesabilitado: boolean = false;
   public usuario: string = ''
-  contrasena: any;
-  URLservidor: String;
-  //public ServidorIP: String = 'http://apacheisis.ddns.net:8080';
-  public ServidorIP: String = 'http://192.168.0.100:8080';
-  direccionURL: any;
+  public contrasena: any;
+  public URLservidor: String;
+  public URLServidorInicial: String = 'http://adet-apacheisis.jelastic.saveincloud.net';
+  //public URLServidorInicial: String = 'http://192.168.0.100:8080';
+  public direccionURL: any;
   public invalidServidor: boolean =false;
 
   constructor(public navCtrl: NavController,
               private formBuilder: FormBuilder,
               private loginService: LoginService,
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController) 
+              { 
+
+                this.FormularioLogin = this.formBuilder.group({
+                  'usuario': [null, Validators.compose([
+                    Validators.required
+                  ])],
+                  'contrasena': [null, Validators.compose([
+                    Validators.required
+                  ])]
+                });
+                
+
+              }
 
 
   ngOnInit() {
-        this.FormularioLogin = this.formBuilder.group({
-      'usuario': [null, Validators.compose([
-        Validators.required
-      ])],
-      'contrasena': [null, Validators.compose([
-        Validators.required
-      ])]
-    });
 
+    //window.localStorage.URLservidor = "";
     this.verificaURLservidor();
   } //end ngOnInit()
 
 
-  verificaURLservidor(){
-  //window.localStorage.URLservidor = "";
-  
+  verificaURLservidor(){ 
   if(!window.localStorage.URLservidor){
-    this.URLservidor = this.ServidorIP;
-    window.localStorage.URLservidor = this.ServidorIP;
+    this.URLservidor = this.URLServidorInicial;
+    window.localStorage.URLservidor = this.URLServidorInicial;
     //Si no tiene contenido el localstorage asigna la hardcodeada
     //alert("No habia direccion en storage. Usara: "+this.ServidorIP)
   }else{
@@ -123,7 +124,7 @@ export class LoginPage implements OnInit {
     if(window.localStorage.URLservidor){
       urlValue = window.localStorage.URLservidor;
     }else if(!urlValue){
-      urlValue = this.ServidorIP;
+      urlValue = this.URLServidorInicial;
     }else{
       urlValue = urlValue;
     }
@@ -169,6 +170,7 @@ export class LoginPage implements OnInit {
 
   cierraApp(){
     window.localStorage.URLservidor = "";
+    window.localStorage.autenticacion = "";
     navigator['app'].exitApp()
   }
 
@@ -187,10 +189,12 @@ export class LoginPage implements OnInit {
   onSubmit(){
     console.log("Se apreto submit")
     console.log(this.FormularioLogin.value)
-    if (this.FormularioLogin.invalid){
-      return;
-    }
-
+    // if (this.FormularioLogin.invalid){
+    //   return;
+    // }
+    
+    this.invalidLogin = false;
+    this.BtnDesabilitado = true;
     this.usuario= this.FormularioLogin.controls.usuario.value,
     this.contrasena= this.FormularioLogin.controls.contrasena.value
     
@@ -202,22 +206,26 @@ export class LoginPage implements OnInit {
 
     if (response && response.length) {   
       console.log("Trajo un array entonces significa que se autenticó correctamente.")
-      this.navCtrl.navigateRoot('/autorizacion-lista');
 
-      this.GuardaUsuarioEnCookie(this.usuario);
+      //Guarda el nombre de usuario en cookie
+      window.localStorage.usuario = this.usuario;
+
+      //Guarda la autenticacion en cookie
+      window.localStorage.autenticacion = btoa(this.usuario+":"+this.contrasena);
+
+      this.navCtrl.navigateRoot('/autorizacion-lista');
     }
     },
     (error) => {
-      console.log(error);
+    console.log(error);
     console.log('Respuesta de la API recibida con error: '+error.statusText);
     //alert('Respuesta de la API recibida con error: '+error.statusText);
+    //this.invalidLogin = true;
+
     this.invalidLogin = true;
+    this.BtnDesabilitado = false;
     })
   } //end onSubmit()
 
-
-  GuardaUsuarioEnCookie(usuarioRecibido: String){
-    window.localStorage.usuario = usuarioRecibido;
-  }
   
 } //end class

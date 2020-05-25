@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="end"><ion-button (click)="cierraApp()"><ion-icon name="close-circle-outline"></ion-icon> Cerrar App</ion-button></ion-buttons>
-    <ion-title>Iniciar Sesion</ion-title>
+    <ion-title>Iniciar Sesi&oacute;n</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,22 +12,25 @@
     <ion-button color="primary" size="small" (click)="elegirURLservidorPrompt()">Establecer URL de API</ion-button>
   </div>
 
+  <div *ngIf="invalidLogin" class="alert alert-danger" role="alert" (click)="this.invalidLogin=false">
+    <!-- <div [hidden]=!invalidLogin class="alert alert-danger" role="alert"> -->
+    Usuario o contrase&ntilde;a incorrecto.<br>
+  O no tiene permisos para utilizar la app mobile.
+  </div>
+
   <ion-grid> 
     <ion-row center>
           <ion-col size="10" offset="1">
 
             <div class="vertical-center">
               <div class="center">
-                <ion-img src="/assets/Logo-login.png" class="ion-align-self-end" (click)="autoCompletar('admin', 'admin')"></ion-img>
+                <ion-img src="/assets/Logo-login.png" class="ion-align-self-end"></ion-img>
+                <!-- <ion-img src="/assets/Logo-login.png" class="ion-align-self-end" (click)="autoCompletar('admin', 'admin')"></ion-img> -->
               </div>   
             </div>
 
-            <div *ngIf="invalidLogin" class="alert alert-danger" role="alert">
-              Usuario o contraseña incorrecto.<br>
-            O no tiene permisos para utilizar la app mobile.
-            </div>
-
   <form [formGroup]="FormularioLogin" class="list-form" (ngSubmit)="onSubmit()">
+
     <ion-item no-padding class="animated fadeInUp"  id="rounded">
       <ion-label position="floating">
         <ion-icon name="person-circle" item-start></ion-icon>
@@ -44,7 +47,7 @@
     <ion-item no-padding class="animated fadeInUp" id="rounded">
       <ion-label position="floating">
         <ion-icon name="lock-closed" item-start></ion-icon>
-        Contraseña
+        Contrase&ntilde;a
       </ion-label>
       <ion-input (keyup.enter)="presionaEnter()" color="black" type="password" formControlName="contrasena" autocomplete="off"></ion-input>
     </ion-item>
@@ -52,14 +55,22 @@
       <ion-text color="danger">Campo requerido</ion-text>
     </p>
 
-      <ion-button type="submit" icon-left size="medium" expand="full" shape="round" color="primary" [disabled]="FormularioLogin.invalid" tappable>
+      <ion-button type="submit" icon-left size="medium" expand="full" shape="round" color="primary" [disabled]="BtnDesabilitado" tappable>
+        <!-- <ion-button type="submit" icon-left size="medium" expand="full" shape="round" color="primary" [disabled]="FormularioLogin.invalid || BtnDesabilitado" tappable></ion-button> -->
         <ion-icon name="log-in"></ion-icon>
         Ingresar
       </ion-button>
+      
   </form>
+
+
+
 </ion-col>
+
 </ion-row>
 </ion-grid>
+
+
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="elegirURLservidorPrompt()">

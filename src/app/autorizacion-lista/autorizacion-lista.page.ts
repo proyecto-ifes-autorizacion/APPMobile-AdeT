@@ -112,8 +112,8 @@ export class AutorizacionListaPage implements OnInit {
 
   async alertaLogOut() {
     const alert = await this.alertController.create({
-      header: 'Cerrar Sesion',
-      message: '¿Esta seguro que desea cerrar sesion?',
+      header: 'Cerrar Sesión',
+      message: '¿Est&aacute; seguro que desea cerrar sesi&oacute;n?',
       buttons: [
         {
           text: 'Cancelar',
@@ -127,6 +127,7 @@ export class AutorizacionListaPage implements OnInit {
           handler: () => {
             console.log('Apreto boton Salir');
             window.localStorage['usuario'] = '';
+            window.localStorage['autenticacion'] = '';
             this.navCtrl.navigateRoot('/login');
           }
         }

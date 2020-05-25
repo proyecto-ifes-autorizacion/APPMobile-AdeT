@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="end"><ion-button (click)="alertaLogOut()"><ion-icon name="log-out-outline"></ion-icon></ion-button></ion-buttons>
     <ion-title>
-      Todas las Autorizaciones
+      Lista de Autorizaciones
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -32,7 +32,7 @@
   <ion-item *ngFor="let resultado of resultadosArray" [routerLink]="['/autorizacion-detalle', resultado.$$instanceId]">
 
   <ion-avatar slot="start" >
-    <img src="https://img.icons8.com/plasticine/100/000000/task-completed.png">
+    <img src="/assets/task.png">
   </ion-avatar>
 
   <ng-template #loggedOut>

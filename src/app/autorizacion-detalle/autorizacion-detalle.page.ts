@@ -207,7 +207,7 @@ export class AutorizacionDetallePage implements OnInit {
               var fechaConvertida = fechafechaConvertidaAfechaISO
               //var fechaConvertida = this.fechaHoraUnidas;
               //console.log("Fecha convertida: "+fechaConvertida);
-              alert("Fecha unida: "+this.fechaHoraUnidas+"\nFecha ConvertidaAfecha: "+fechaConvertidaAfecha+"\nfechaConvertidaAfechaMenos3: "+fechaConvertidaAfechaMenos3+"\nfechafechaConvertidaAfechaISO: "+fechafechaConvertidaAfechaISO+"\nFecha convertida: "+fechaConvertida);
+              //alert("Fecha unida: "+this.fechaHoraUnidas+"\nFecha ConvertidaAfecha: "+fechaConvertidaAfecha+"\nfechaConvertidaAfechaMenos3: "+fechaConvertidaAfechaMenos3+"\nfechafechaConvertidaAfechaISO: "+fechafechaConvertidaAfechaISO+"\nFecha convertida: "+fechaConvertida);
               //alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida);
 
               this.autorizacionService.cerrarAutorizacion(recipeId, fechaConvertida)
@@ -303,7 +303,7 @@ export class AutorizacionDetallePage implements OnInit {
               var fechaConvertida = new Date(this.fechaHoraUnidas).toISOString()
               console.log("Fecha convertida: "+fechaConvertida);
               //alert("Fecha convertida: "+fechaConvertida);
-              alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida+"/"+data.inputMotivo);
+              //alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida+"/"+data.inputMotivo);
               //this.autorizacionService.cancelarAutorizacion(recipeId, inputFecha, inputMotivo);
               this.autorizacionService.cancelarAutorizacion(recipeId, fechaConvertida, data.inputMotivo)
               .subscribe(
@@ -327,7 +327,7 @@ export class AutorizacionDetallePage implements OnInit {
   async cancelarAutorizacionSatisfactoria() {
     const alerta = await this.alertCtrl.create({
       header: 'Informacion',
-      message: 'La Autorizacion fue cancelada con la informacion especificada.',
+      message: 'La Autorizacion fue cancelada con el motivo especificado.',
       buttons: ['Aceptar'],
     });
   

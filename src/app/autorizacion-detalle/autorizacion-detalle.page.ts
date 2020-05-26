@@ -300,7 +300,10 @@ export class AutorizacionDetallePage implements OnInit {
               let {inputHora} = this
               let {inputMotivo} = this
               this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
-              var fechaConvertida = new Date(this.fechaHoraUnidas).toISOString()
+              var fechaConvertidaAfecha = new Date(this.fechaHoraUnidas);
+              var fechaConvertidaAfechaMenos3 = fechaConvertidaAfecha.setHours(fechaConvertidaAfecha.getHours() - 3);
+              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString()
+              var fechaConvertida = fechafechaConvertidaAfechaISO;
               console.log("Fecha convertida: "+fechaConvertida);
               //alert("Fecha convertida: "+fechaConvertida);
               //alert("Los campos tienen algo entonces envia: "+recipeId+"/"+fechaConvertida+"/"+data.inputMotivo);

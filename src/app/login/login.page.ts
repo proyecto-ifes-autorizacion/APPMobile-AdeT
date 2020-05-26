@@ -17,7 +17,7 @@ export class LoginPage implements OnInit {
   public usuario: string = ''
   public contrasena: any;
   public URLservidor: String;
-  public URLServidorInicial: String = 'http://adet-apacheisis.jelastic.saveincloud.net';
+  public URLServidorInicial: String = 'http://apacheisis-adet.jelastic.saveincloud.net';
   //public URLServidorInicial: String = 'http://192.168.0.100:8080';
   public direccionURL: any;
   public invalidServidor: boolean =false;

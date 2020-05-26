@@ -203,7 +203,7 @@ export class AutorizacionDetallePage implements OnInit {
               this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
               var fechaConvertidaAfecha = new Date(this.fechaHoraUnidas);
               var fechaConvertidaAfechaMenos3 = fechaConvertidaAfecha.setHours(fechaConvertidaAfecha.getHours() - 3);
-              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString()
+              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString();
               var fechaConvertida = fechafechaConvertidaAfechaISO
               //var fechaConvertida = this.fechaHoraUnidas;
               //console.log("Fecha convertida: "+fechaConvertida);
@@ -302,7 +302,7 @@ export class AutorizacionDetallePage implements OnInit {
               this.fechaHoraUnidas = data.inputFecha+" "+data.inputHora;
               var fechaConvertidaAfecha = new Date(this.fechaHoraUnidas);
               var fechaConvertidaAfechaMenos3 = fechaConvertidaAfecha.setHours(fechaConvertidaAfecha.getHours() - 3);
-              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString()
+              var fechafechaConvertidaAfechaISO = fechaConvertidaAfecha.toISOString();
               var fechaConvertida = fechafechaConvertidaAfechaISO;
               console.log("Fecha convertida: "+fechaConvertida);
               //alert("Fecha convertida: "+fechaConvertida);
